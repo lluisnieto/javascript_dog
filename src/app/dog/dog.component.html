@@ -1,0 +1,19 @@
+<input type="button" value="Bark"
+    (click)="bark()"
+    [disabled]="sleepFlag"
+/>
+<input type="button" value="Walk"
+    (click)="walk()"
+    [disabled]="sleepFlag"
+/>
+<input type="button" value="Run"
+    (click)="run()"
+    [disabled]="sleepFlag"
+/>
+<input type="button" value="Sleep"
+    (click)="sleep(fatigue)"
+    [disabled]="sleepFlag"
+/>
+<ul>
+    <li *ngFor="let item of barkHistory">{{ item }}</li>
+</ul>
