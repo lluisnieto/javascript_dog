@@ -15,6 +15,13 @@ export class DogComponent extends Animal {
     sleepFlag: boolean;
     queuedActions: string[];
 
+    SOUND_CRICKETS: any;
+    SOUND_BARK: any;
+    MULTIPLIER: number;
+
+    nightDuration: number;
+    secondsLeft: number;
+
 
     constructor() {
         super();
@@ -25,11 +32,21 @@ export class DogComponent extends Animal {
         this.fatigue = 0;
         this.sleepFlag = false;
         this.queuedActions = [];
+
+        this.SOUND_CRICKETS = new Audio('assets/crickets.mp3');
+        this.SOUND_CRICKETS.loop = true;
+        this.SOUND_BARK = new Audio('assets/bark.mp3');
+
+        this.MULTIPLIER = 10;
+
+        this.nightDuration = 1;
     }
+
 
     // Dog barks.
     bark(): void {
         this.barkHistory.push('Wa!');
+        this.SOUND_BARK.play();
     }
 
     // Dog takes a walk.
@@ -49,11 +66,14 @@ export class DogComponent extends Animal {
     // Dog goes to sleep for a determinate time in milliseconds.
     sleep(time: number): void {
         this.sleepFlag = true;
+        this.SOUND_CRICKETS.play();
+        let timer = this.playCountDown(time);
         setTimeout(
             () => {
                 this.wakeUp();
+                clearInterval(timer);
             },
-            time
+            time * this.MULTIPLIER // multiplier to ease playing with dog
         )
     }
 
@@ -66,6 +86,9 @@ export class DogComponent extends Animal {
     // Wakes up dog with fresh values and executes queued tasks if there are any.
     wakeUp(): void {
         console.clear();
+        console.log('wake up');
+        this.SOUND_CRICKETS.pause();
+        this.SOUND_CRICKETS.currentTime = 0;
         this.fatigue = 0;
         this.barkHistory = [];
         this.sleepFlag = false;
@@ -91,6 +114,18 @@ export class DogComponent extends Animal {
             }
         );
         this.queuedActions = [];
+    }
+
+    // Countdown till wake up
+    playCountDown(time: number): any {
+        this.nightDuration = Math.floor(time / 1000 * this.MULTIPLIER);
+        this.secondsLeft = this.nightDuration;
+
+        return setInterval(
+            () => {
+                this.secondsLeft --;
+            },1000
+        );
     }
 
 }

@@ -1,16 +1,18 @@
-<input type="button" value="Bark"
-    (click)="requestAction('bark')"
-/>
-<input type="button" value="Walk"
-    (click)="requestAction('walk')"
-/>
-<input type="button" value="Run"
-    (click)="requestAction('run')"
-/>
-<input type="button" value="Sleep"
-    (click)="sleep(fatigue)"
-    [disabled]="sleepFlag"
-/>
-<ul>
+<div class="wrapper" [class.night]="sleepFlag" [style.animation-duration]="nightDuration+'s'">
+
+</div>
+<div class="button-container">
+    <button md-raised-button (click)="requestAction('bark')">Bark</button>
+    <button md-raised-button (click)="requestAction('walk')">Walk</button>
+    <button md-raised-button (click)="requestAction('run')">Run</button>
+    <button md-raised-button
+            (click)="sleep(fatigue)"
+            [class.sleep]="sleepFlag"
+    >Sleep</button>
+</div>
+
+<ul class="bark-history">
     <li *ngFor="let item of barkHistory">{{ item }}</li>
 </ul>
+
+<div class="countdown" [class.visible]="sleepFlag">{{ secondsLeft }}</div>

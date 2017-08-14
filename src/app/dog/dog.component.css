@@ -1,0 +1,47 @@
+.wrapper {
+    width:calc(100% - 20px);
+    height:calc(100% - 20px);
+    position:absolute;
+    background: #FFF;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.wrapper.night {
+    opacity: 1;
+    background: #33195B;
+    animation: all-night-long forwards;
+}
+
+.sleep {
+    background: #333;
+    color: #FFF;
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
+
+.button-container {
+    padding:10px;
+}
+
+.bark-history {
+    font-family:Arial, sans-serif;
+}
+
+.countdown {
+    position: absolute;
+    top: 0px;
+    right:30px;
+    color:#FFF;
+    font-size:180px;
+    opacity:0;
+    transition: all 0.5s;
+    font-family: sans-serif;
+    font-weight:bold;
+}
+.countdown.visible { opacity:0.25 }
+
+@keyframes all-night-long {
+    0%      {background-color: #041144;}
+    100%     {background-color: #6D2376;}
+}
