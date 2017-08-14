@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Animal } from './../app.component';
 
 @Component({
@@ -6,13 +6,15 @@ import { Animal } from './../app.component';
     templateUrl: './dog.component.html',
     styleUrls: ['./dog.component.css']
 })
-export class DogComponent extends Animal implements OnInit {
+export class DogComponent extends Animal {
 
     RUN_MIN: number;
     RUN_MAX: number;
     barkHistory: string[];
     fatigue: number;
     sleepFlag: boolean;
+    queuedActions: string[];
+
 
     constructor() {
         super();
@@ -22,31 +24,29 @@ export class DogComponent extends Animal implements OnInit {
         this.RUN_MAX = 100;
         this.fatigue = 0;
         this.sleepFlag = false;
+        this.queuedActions = [];
     }
 
-
-    ngOnInit() {
-        console.log('a puppy has been born.')
-    }
-
+    // Dog barks.
     bark(): void {
         this.barkHistory.push('Wa!');
     }
 
+    // Dog takes a walk.
     walk(): number {
         let val = Math.floor(Math.random() * 11);
-        this.addFatigue(val);
 
         return val;
     }
 
+    // Dog starts running.
     run(): number {
         let val = Math.floor(Math.random() * (this.RUN_MAX - this.RUN_MIN + 1)) + this.RUN_MIN;
-        this.addFatigue(val);
 
         return val;
     }
 
+    // Dog goes to sleep for a determinate time in milliseconds.
     sleep(time: number): void {
         this.sleepFlag = true;
         setTimeout(
@@ -57,16 +57,40 @@ export class DogComponent extends Animal implements OnInit {
         )
     }
 
+    // Adds fatigue to dog.
     addFatigue(val: number): void {
         this.fatigue += val;
         console.log(this.fatigue);
     }
 
-    wakeUp() {
+    // Wakes up dog with fresh values and executes queued tasks if there are any.
+    wakeUp(): void {
+        console.clear();
         this.fatigue = 0;
         this.barkHistory = [];
         this.sleepFlag = false;
-        console.clear();
+        this.executeActions();
+    }
+
+    // Asks dog to do something. It will execute immediatly if is not sleeping or will queue actions.
+    requestAction(identifier: string): void {
+        this.queuedActions.push(identifier);
+        if(!this.sleepFlag){
+            this.executeActions();
+        }
+    }
+
+    // Dog executes queued actions
+    executeActions(): void {
+        this.queuedActions.forEach(
+            (action) => {
+                let val = this[action]();
+                if(val){
+                    this.addFatigue(val);
+                }
+            }
+        );
+        this.queuedActions = [];
     }
 
 }

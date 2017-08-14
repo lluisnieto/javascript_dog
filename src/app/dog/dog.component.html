@@ -1,14 +1,11 @@
 <input type="button" value="Bark"
-    (click)="bark()"
-    [disabled]="sleepFlag"
+    (click)="requestAction('bark')"
 />
 <input type="button" value="Walk"
-    (click)="walk()"
-    [disabled]="sleepFlag"
+    (click)="requestAction('walk')"
 />
 <input type="button" value="Run"
-    (click)="run()"
-    [disabled]="sleepFlag"
+    (click)="requestAction('run')"
 />
 <input type="button" value="Sleep"
     (click)="sleep(fatigue)"
