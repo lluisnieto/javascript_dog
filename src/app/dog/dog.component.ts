@@ -8,12 +8,15 @@ import { Animal } from './../app.component';
 })
 export class DogComponent extends Animal {
 
-    RUN_MIN: number;
-    RUN_MAX: number;
     barkHistory: string[];
     fatigue: number;
     sleepFlag: boolean;
     queuedActions: string[];
+
+    RUN_MIN: number;
+    RUN_MAX: number;
+    WALK_MIN: number;
+    WALK_MAX: number;
 
     SOUND_CRICKETS: any;
     SOUND_BARK: any;
@@ -27,11 +30,15 @@ export class DogComponent extends Animal {
         super();
 
         this.barkHistory = [];
-        this.RUN_MIN = 50;
-        this.RUN_MAX = 100;
         this.fatigue = 0;
         this.sleepFlag = false;
         this.queuedActions = [];
+
+        this.RUN_MIN = 50;
+        this.RUN_MAX = 100;
+
+        this.WALK_MAX = 10;
+        this.WALK_MIN = 0;
 
         this.SOUND_CRICKETS = new Audio('assets/crickets.mp3');
         this.SOUND_CRICKETS.loop = true;
@@ -51,16 +58,12 @@ export class DogComponent extends Animal {
 
     // Dog takes a walk.
     walk(): number {
-        let val = Math.floor(Math.random() * 11);
-
-        return val;
+        return this.getRandomIntFromRange(this.WALK_MIN, this.WALK_MAX);
     }
 
     // Dog starts running.
     run(): number {
-        let val = Math.floor(Math.random() * (this.RUN_MAX - this.RUN_MIN + 1)) + this.RUN_MIN;
-
-        return val;
+        return this.getRandomIntFromRange(this.RUN_MIN, this.RUN_MAX);
     }
 
     // Dog goes to sleep for a determinate time in milliseconds.
@@ -118,7 +121,7 @@ export class DogComponent extends Animal {
 
     // Countdown till wake up
     playCountDown(time: number): any {
-        this.nightDuration = Math.floor(time / 1000 * this.MULTIPLIER);
+        this.nightDuration = Math.floor(time / 1000 * this.MULTIPLIER); // Convert to seconds (and applies multiplier)
         this.secondsLeft = this.nightDuration;
 
         return setInterval(
@@ -126,6 +129,11 @@ export class DogComponent extends Animal {
                 this.secondsLeft --;
             },1000
         );
+    }
+
+    // Returns random integer from range
+    getRandomIntFromRange(min: number, max: number): number {
+        return Math.floor(Math.random() * (max - min + 1)) + min
     }
 
 }
